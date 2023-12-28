@@ -58,6 +58,8 @@ jobs:
 
       - name: Merge changes from main into ci
         run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           echo "If branch $branch_name exists, merge changes from main into it"
           if git show-ref --quiet refs/heads/$branch_name
           then
