@@ -56,6 +56,20 @@ jobs:
           fetch-depth: 0 # Let's get all the branches.
           ref: ci # Important, as normally `branch_protection_rule` event won't grab other branches
 
+      - name: Merge changes from main into ci
+        run: |
+          echo "If branch $branch_name exists, merge changes from main into it"
+          if git show-ref --quiet refs/heads/$branch_name
+          then
+            git checkout $branch_name
+            git merge $base_branch_name
+            git push
+          else
+            echo "Branch $branch_name does not exist"
+          fi
+        env:
+          branch_name: ci
+          base_branch_name: main
 
       # TODO: figure out a better way to deal with the merge conflict.
       # In README.md, switch step 4 for step 5.
